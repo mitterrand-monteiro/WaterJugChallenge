@@ -22,32 +22,32 @@ def water_jug_solution(x: int, y: int, z: int) -> Optional[List[Tuple[int, int]]
         return None  # No solution possible
 
     visited = set()
-    queue = [(0, 0)]
+    queue = [((0, 0), [])]  # Each queue element is a tuple of (current state, history)
     actions = []
 
     while queue:
-        current = queue.pop(0)
-        if current[0] == z or current[1] == z:
-            actions.append((current[0], current[1]))  # Append tuple with two items
+        current, history = queue.pop(0)
+        a, b = current
+        if a == z or b == z:
+            actions = [(0, 0)] + history + [current]
             return actions
 
         visited.add(current)
-        a, b = current
 
         # Actions: Fill A, Fill B, Empty A, Empty B, Pour A to B, Pour B to A
         next_states = [
-            (x, b),  # Fill A
-            (a, y),  # Fill B
-            (0, b),  # Empty A
-            (a, 0),  # Empty B
-            (min(x, a + b), max(0, a + b - x)),  # Pour A to B
-            (max(0, a + b - y), min(y, a + b))   # Pour B to A
+            ((x, b), history + [current]),  # Fill A
+            ((a, y), history + [current]),  # Fill B
+            ((0, b), history + [current]),  # Empty A
+            ((a, 0), history + [current]),  # Empty B
+            ((min(x, a + b), max(0, a + b - x)), history + [current]),  # Pour A to B
+            ((max(0, a + b - y), min(y, a + b)), history + [current])   # Pour B to A
         ]
 
-        for state in next_states:
+        for state, hist in next_states:
             if state not in visited:
-                queue.append(state)
-                actions.append((a, b))  # Append tuple with two items
+                queue.append((state, hist))
+
     return None  # No solution possible
 
 def gcd(a: int, b: int) -> int:

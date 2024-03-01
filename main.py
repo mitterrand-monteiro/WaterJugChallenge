@@ -28,7 +28,7 @@ def water_jug_solution(x: int, y: int, z: int) -> Optional[List[Tuple[int, int]]
     while queue:
         current = queue.pop(0)
         if current[0] == z or current[1] == z:
-            actions.append(current)
+            actions.append((current[0], current[1]))  # Append tuple with two items
             return actions
 
         visited.add(current)
@@ -47,7 +47,7 @@ def water_jug_solution(x: int, y: int, z: int) -> Optional[List[Tuple[int, int]]
         for state in next_states:
             if state not in visited:
                 queue.append(state)
-                actions.append((a, b, state))
+                actions.append((a, b))  # Append tuple with two items
     return None  # No solution possible
 
 def gcd(a: int, b: int) -> int:
@@ -59,9 +59,9 @@ def gcd(a: int, b: int) -> int:
 async def get_water_jug_solution(x: int, y: int, z: int):
     solution = water_jug_solution(x, y, z)
     if solution:
-        return {"solution": solution}
+        return {"solution": solution, "message": ""}
     else:
-        return {"message": "No solution possible"}
+        return {"solution": [], "message": "No solution possible"}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)

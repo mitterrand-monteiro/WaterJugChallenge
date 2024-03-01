@@ -1,0 +1,12 @@
+# FastAPI generated files
+__pycache__
+.pytest_cache
+.vscode
+.idea
+*.log
+dist/
+build/
+*.pyc
+
+# Virtual environment
+waterjug/
